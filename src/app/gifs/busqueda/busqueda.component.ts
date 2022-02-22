@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { GifsService } from '../services/gifs.service';
 
 @Component({
   selector: 'app-busqueda',
@@ -8,23 +9,30 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 export class BusquedaComponent {
 
 
-
+  // captura el valor ingresado en el input deacuerdo a la referencia -- se obtiene la referencia del objeto
+  // se obtiene el valor ingresado en la referencia txtBuscarReferencia y se asigna a la variable txtBuscar
   @ViewChild('txtBuscarReferencia') txtBuscar!:ElementRef<HTMLInputElement>;
 
 
-  dato='';
+  constructor( private _gifsService: GifsService){
+
+  }
 
 
 
   buscar(){
 
+    // se asigna el valor obtenido de txtBuscar a la variable valor
     const valor = this.txtBuscar.nativeElement.value;
 
-    console.log(valor);
+    // condicion para que no agregue valores vacios 
+    if(valor.trim().length === 0){
+      return;
+    }
 
-    this.dato= valor;
+    // enviar valor ingresado al metodo buscarGifs
+    this._gifsService.buscarGifs(valor);
 
-    console.log(this.dato);
 
     this.txtBuscar.nativeElement.value = '';
 
