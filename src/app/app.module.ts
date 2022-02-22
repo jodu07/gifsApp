@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { GifsModule } from './gifs/gifs.module';
+import { SharedModule } from './shared/shared.module';
 
 
 
@@ -13,7 +14,8 @@ import { GifsModule } from './gifs/gifs.module';
   ],    
   imports: [
     BrowserModule,
-    GifsModule
+    GifsModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

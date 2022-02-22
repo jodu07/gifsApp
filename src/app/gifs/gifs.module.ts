@@ -4,6 +4,7 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
 import { GifsPageComponent } from './gifs-page/gifs-page.component';
 import { GifsService } from './services/gifs.service';
 import { ResultadosComponent } from './resultados/resultados.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -20,10 +21,11 @@ import { ResultadosComponent } from './resultados/resultados.component';
   ],
 
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   providers: [
-    GifsService
+   
   ],
 })
 export class GifsModule { }
