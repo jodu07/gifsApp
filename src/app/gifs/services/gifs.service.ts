@@ -1,19 +1,40 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SearchGifsResponse, Gif } from '../interface/gifs.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GifsService {
 
+  private apiKey: string = 'raRtghTR8PVTUukbpiLri8xVKSk12PHQ';
   private _historial: string[] = [];
 
-  get historial() {
-    
+  public resultados: Gif[] = [];
+
+  get historial() {    
     return [...this._historial];
   }
 
-  buscarGifs( query:string = ''){
 
+  // el constructor solo se ejecuta una vez en el servicio
+  constructor(private http: HttpClient){
+    //---- una forma de hacerlo para mostrar lo guardado en localStorage
+   // if( localStorage.getItem('historial')){
+      // JSON.parse caso opuesto del stringify, toma un obetivo convertido en string y lo retorna a lo que era
+     // this._historial = JSON.parse( localStorage.getItem('historial')! );
+
+     //----- otra forma de hacerlo mas simple en una sola linea
+     this._historial = JSON.parse(localStorage.getItem('historial')! ) || [];
+
+     this.resultados = JSON.parse(localStorage.getItem('resultados')! ) || [];
+    }   
+
+  
+
+
+
+  buscarGifs( query:string = ''){
     // trim para borrar espacios y toLowerCase para convertir en minuscula
     // tod0 lo que ingrese se convierte a minuscula para hacer la comparacion que el valor ingresado no exista en el arreglo
     query = query.trim().toLowerCase();
@@ -27,20 +48,24 @@ export class GifsService {
 
           // splice para cortar el arreglo hasta 10
           this._historial = this._historial.splice(0,10);
+
+          //localStore es propio de javaScript, el setIten recibe una clave y un valor de tipo string
+          // JSON.stringify() recibe un objeto y convierte el objeto en string
+          localStorage.setItem('historial', JSON.stringify(this._historial));
     } 
 
-
-
-    console.log(this._historial)
-
+    this.http.get<SearchGifsResponse>(`http://api.giphy.com/v1/gifs/search?api_key=raRtghTR8PVTUukbpiLri8xVKSk12PHQ&q=${query}&limit=10`)
+          .subscribe( (resp ) => { 
+            console.log(resp.data);
+            this.resultados = resp.data;
+            
+            localStorage.setItem('resultados', JSON.stringify(this.resultados) );
+           
+          });
+          // el subscribe se va ejecutar cuando se tenga la resolucion del http.get
   }
-
-
-
-
-
-
-
-
-
 }
+
+
+// httpClient trabaja con observables, son o retornan observables
+//los observables son mejor que las promesas porque tienen mejor control
