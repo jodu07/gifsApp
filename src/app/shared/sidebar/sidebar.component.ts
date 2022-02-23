@@ -16,6 +16,12 @@ export class SidebarComponent {
     
   }
 
+
+  // metodo para traer gifs desde el historial en el sidebar
+  buscar( termino: string){
+    this._gifsService.buscarGifs(termino);
+  }
+
   
 
 }
